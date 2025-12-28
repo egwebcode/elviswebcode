@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELVIS WEBCODE | Guild Services</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+    :root {
+        --primary: #ff3c00; /* Free Fire Orange/Red */
+        --secondary: #ffae00;
+        --accent: #00ffcc;
+        --dark: #050505;
+        --card-bg: rgba(20, 20, 20, 0.7);
+        --glass: rgba(255, 255, 255, 0.05);
+        --border: rgba(255, 255, 255, 0.1);
+    }
+
+    * {
+        box-sizing: border-box;
+        outline: none;
+    }
+
+    body {
+        margin: 0;
+        font-family: 'Rajdhani', sans-serif;
+        background-color: var(--dark);
+        color: #fff;
+        overflow-x: hidden;
+    }
+
+    /* BACKGROUND PARALLAX */
+    .bg-layer {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        /* Free Fire / Gaming Style Background */
+        background: url('https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=2065&auto=format&fit=crop') no-repeat center center/cover;
+    }
+    
+    .bg-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.95) 100%);
+        backdrop-filter: blur(3px);
+    }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #111;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: var(--primary);
+        border-radius: 4px;
+    }
+
+    /* HEADER */
+    header {
+        text-align: center;
+        padding: 60px 20px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    header h1 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 3rem;
+        margin: 0;
+        text-transform: uppercase;
+        background: linear-gradient(90deg, #fff, var(--primary), #fff);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        animation: shine 3s infinite linear;
+        text-shadow: 0 0 20px rgba(255, 60, 0, 0.5);
+    }
+
+    header p {
+        font-size: 1.2rem;
+        color: #ccc;
+        margin-top: 10px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    .badge {
+        display: inline-block;
+        background: var(--primary);
+        color: #000;
+        padding: 5px 15px;
+        font-weight: 700;
+        font-size: 0.8rem;
+        border-radius: 50px;
+        margin-bottom: 10px;
+        box-shadow: 0 0 15px var(--primary);
+    }
+
+    /* CONTAINER */
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        padding-bottom: 80px;
+    }
+
+    /* CARDS */
+    .card {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 25px;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        backdrop-filter: blur(10px);
+        opacity: 0; /* JS Fade In */
+        transform: translateY(30px);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary), var(--secondary));
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.4s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        border-color: rgba(255,255,255,0.3);
+    }
+
+    .card:hover::before {
+        transform: scaleX(1);
+    }
+
+    .card h2 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.5rem;
+        margin: 0 0 15px;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .card h2 i {
+        font-size: 1rem;
+    }
+
+    /* TIER COLORS */
+    .tier-basic h2 { color: #00ff88; text-shadow: 0 0 10px rgba(0,255,136,0.4); }
+    .tier-mid h2 { color: #ffae00; text-shadow: 0 0 10px rgba(255,174,0,0.4); }
+    .tier-pro h2 { color: #ff3c00; text-shadow: 0 0 10px rgba(255,60,0,0.4); }
+
+    .card ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        flex-grow: 1;
+    }
+
+    .card li {
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        color: #ddd;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .card li::before {
+        content: '>';
+        color: var(--primary);
+        font-weight: bold;
+        margin-right: 10px;
+        font-family: monospace;
+    }
+
+    .price-tag {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #fff;
+        margin: 20px 0;
+        text-shadow: 0 0 15px rgba(255,255,255,0.2);
+    }
+    
+    .price-tag span {
+        font-size: 1rem;
+        color: #aaa;
+        font-weight: 400;
+    }
+
+    /* BUTTON */
+    .btn {
+        display: block;
+        width: 100%;
+        padding: 15px;
+        text-align: center;
+        background: transparent;
+        color: var(--primary);
+        text-decoration: none;
+        font-family: 'Orbitron', sans-serif;
+        font-weight: 700;
+        text-transform: uppercase;
+        border: 2px solid var(--primary);
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .btn:hover {
+        background: var(--primary);
+        color: #000;
+        box-shadow: 0 0 20px var(--primary);
+    }
+
+    .btn i {
+        margin-left: 8px;
+    }
+
+    /* FOOTER */
+    footer {
+        background: #000;
+        text-align: center;
+        padding: 30px;
+        border-top: 1px solid #222;
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    footer strong {
+        color: var(--primary);
+    }
+
+    /* ANIMATIONS */
+    @keyframes shine {
+        0% { background-position: 0% 50%; }
+        100% { background-position: 100% 50%; }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+        header h1 { font-size: 2rem; }
+        .container { grid-template-columns: 1fr; }
+    }
+
+</style>
+</head>
+<body>
+
+<div class="bg-layer"></div>
+<div class="bg-overlay"></div>
+
+<header>
+    <div class="badge">DESENVOLVEDOR PROFISIONAL</div>
+    <h1>Elvis Webcode</h1>
+    <p>Profissional para sites de Guildas</p>
+</header>
+
+<div class="container">
+
+    <!-- BASIC TIER -->
+    <div class="card tier-basic" style="animation-delay: 0.1s;">
+        <h2><i class="fa-solid fa-circle"></i> Ultra Básico</h2>
+        <ul>
+            <li>Landing Page Única (One Page)</li>
+            <li>Nome da Guilda em Destaque</li>
+            <li>Integração de Logo/Emblema</li>
+            <li>Hospedagem Netlify Grátis</li>
+        </ul>
+        <div class="price-tag"><span>R$</span> 5.00</div>
+        <a class="btn" onclick="contato('Ultra Básico - R$5.00')">Contratar <i class="fa-brands fa-whatsapp"></i></a>
+    </div>
+
+    <div class="card tier-basic" style="animation-delay: 0.2s;">
+        <h2><i class="fa-solid fa-shield-halved"></i> Básico Simples</h2>
+        <ul>
+            <li>Estrutura One Page Otimizada</li>
+            <li>Seção: Sobre a Guilda</li>
+            <li>Seção: Líderes & Staff</li>
+            <li>Botões de Redes Sociais</li>
+            <li>Tema Visual Gamer</li>
+        </ul>
+        <div class="price-tag"><span>R$</span> 10.00</div>
+        <a class="btn" onclick="contato('Básico Simples - R$10.00')">Contratar <i class="fa-brands fa-whatsapp"></i></a>
+    </div>
+
+    <div class="card tier-basic" style="animation-delay: 0.3s;">
+        <h2><i class="fa-solid fa-gamepad"></i> Básico Gamer</h2>
+        <ul>
+            <li>Menu de Navegação Completo</li>
+            <li>Seções: Regras & Diretrizes</li>
+            <li>Layout Responsivo (Mobile First)</li>
+            <li>Efeitos Visuais CSS</li>
+        </ul>
+        <div class="price-tag"><span>R$</span> 12.00</div>
+        <a class="btn" onclick="contato('Básico Gamer - R$12.00')">Contratar <i class="fa-brands fa-whatsapp"></i></a>
+    </div>
+
+    <!-- MID TIER -->
+    <div class="card tier-mid" style="animation-delay: 0.4s;">
+        <h2><i class="fa-solid fa-bolt"></i> Intermediário</h2>
+        <ul>
+            <li>Estrutura Multi-página (2 Pgs)</li>
+            <li>Formulário de Recrutamento</li>
+            <li>Design Grid Organizado</li>
+            <li>Galeria de Prints/Booyah</li>
+        </ul>
+        <div class="price-tag"><span>R$</span> 15.00</div>
+        <a class="btn" onclick="contato('Intermediário - R$15.00')">Contratar <i class="fa-brands fa-whatsapp"></i></a>
+    </div>
+
+    <div class="card tier-mid" style="animation-delay: 0.5s;">
+        <h2><i class="fa-solid fa-star"></i> Intermediário Plus</h2>
+        <ul>
+            <li>Estrutura Multi-página (3 Pgs)</li>
+            <li>Lista de Membros Ativos</li>
+            <li>Animações de Entrada (Scroll)</li>
+            <li>Otimização de Carregamento</li>
+        </ul>
+        <div class="price-tag"><span>R$</span> 20.00</div>
+        <a class="btn" onclick="contato('Intermediário Plus - R$20.00')">Contratar <i class="fa-brands fa-whatsapp"></i></a>
+    </div>
+
+    <!-- PRO TIER -->
+    <div class="card tier-pro" style="animation-delay: 0.6s;">
+        <h2><i class="fa-solid fa-crown"></i> Premium Pro</h2>
+        <ul>
+            <li>Site Completo (3-4 Páginas)</li>
+            <li>Sistema de Ranking Simples</li>
+            <li>Página de Recrutamento Avançada</li>
+            <li>Suporte & Ajustes Pós-Entrega</li>
+            <li>Design Exclusivo "Pro League"</li>
+        </ul>
+        <div class="price-tag"><span>R$</span> 30.00</div>
+        <a class="btn" onclick="contato('Premium Simples - R$30.00')">Contratar <i class="fa-brands fa-whatsapp"></i></a>
+    </div>
+
+</div>
+
+<footer>
+    <p>&copy; 2025 • <strong>ELVIS WEBCODE</strong> • Todos os direitos reservados.</p>
+    <p style="font-size: 12px; opacity: 0.5;">Desenvolvimento High-End para Free Fire</p>
+</footer>
+
+<script>
+    // WhatsApp Logic
+    function contato(plano){
+        const numero = "5583991672088";
+        const msg = `Olá Elvis, tenho interesse no projeto: ${plano}. Podemos conversar?`;
+        window.open(`https://wa.me/${numero}?text=${encodeURIComponent(msg)}`, "_blank");
+    }
+
+    // Scroll Animation Logic
+    const observerOptions = {
+        threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.card').forEach(card => {
+        observer.observe(card);
+    });
+</script>
+
+</body>
+</html>
